@@ -1,7 +1,14 @@
 <template>
   <div class="AMap">
     <div class="AMap-left">
-      {{nowAddress}}
+      <div class="">
+        <input id="tipinput" ref="tipinput" v-model="searchKey" :value="searchKey"/>
+        <button type="button" name="button" @click="seachAddress">搜索</button>
+      </div>
+      <div class="">
+        {{nowAddress}}
+      </div>
+      <div id="panel"></div>
     </div>
     <div id="container" class="mymap">
 
@@ -12,12 +19,14 @@
 
 <script>
 import AMap from 'AMap'
+let map = {}
 export default {
   name: 'AMap',
   data () {
     return {
       center: [118.180987, 24.486432],
-      nowAddress: ''
+      nowAddress: '',
+      searchKey: ''
     }
   },
   mounted () {
@@ -33,16 +42,21 @@ export default {
   },
   methods: {
     loadmap () {
-      let _this = this
-      const map = new AMap.Map('container', {
+      map = new AMap.Map('container', {
         resizeEnable: true,
         center: this.center,
         zoom: 13
       })
+      let _this = this
       AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], () => {
         map.addControl(new AMap.ToolBar())
         map.addControl(new AMap.Scale())
       })
+      let tipinput = new AMap.Autocomplete({
+        input: 'tipinput'
+      })
+      console.log('tipinput')
+      console.log(tipinput)
       let marker = new AMap.Marker({
         icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
         position: this.center
@@ -57,6 +71,7 @@ export default {
         // map.setFitView()
         _this.getNowAddress()
       })
+      // 输入提示
     },
     getNowAddress () {
       let geocoder = {}
@@ -76,6 +91,22 @@ export default {
            // 获取地址失败
         }
       })
+    },
+    seachAddress () {
+      let _this = this
+      this.searchKey = this.$refs.tipinput.value
+      AMap.service(['AMap.PlaceSearch'], function () {
+        var placeSearch = new AMap.PlaceSearch({ // 构造地点查询类
+          pageSize: 5,
+          pageIndex: 1,
+          city: '010', // 城市
+          map: map,
+          panel: 'panel'
+        })
+        // 关键字查询
+        placeSearch.search(_this.searchKey)
+        console.log(placeSearch)
+      })
     }
   }
 }
@@ -88,9 +119,15 @@ export default {
     height: 500px;
   }
   .AMap-left {
-    width: 200px;
+    width: 300px;
   }
   .AMap {
     display: flex;
   }
+  #panel {
+    background-color: white;
+    max-height: 90%;
+    overflow-y: auto;
+    width: 280px;
+}
 </style>
