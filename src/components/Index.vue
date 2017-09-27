@@ -20,6 +20,7 @@
 <script>
 import AMap from 'AMap'
 let map = {}
+let marker = {}
 export default {
   name: 'AMap',
   data () {
@@ -57,7 +58,7 @@ export default {
       })
       console.log('tipinput')
       console.log(tipinput)
-      let marker = new AMap.Marker({
+      marker = new AMap.Marker({
         icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
         position: this.center
         // title: provinces[i].name
@@ -73,6 +74,7 @@ export default {
       })
       // 输入提示
     },
+    // 获取中心点的详细地址
     getNowAddress () {
       let geocoder = {}
       AMap.service('AMap.Geocoder', () => {
@@ -81,32 +83,57 @@ export default {
           city: '010' // 城市，默认：“全国”
         })
       })
+      // 地理编码返回详细地址
       geocoder.getAddress(this.center, (status, result) => {
         if (status === 'complete' && result.info === 'OK') {
           console.log(result.regeocode.formattedAddress)
           this.nowAddress = result.regeocode.formattedAddress
+          this.openInfo(this.nowAddress)
            // 获得了有效的地址信息:
            // 即，result.regeocode.formattedAddress
         } else {
-           // 获取地址失败
+          // 获取地址失败
+
         }
       })
     },
+    // 搜索详细地址
     seachAddress () {
       let _this = this
       this.searchKey = this.$refs.tipinput.value
       AMap.service(['AMap.PlaceSearch'], function () {
-        var placeSearch = new AMap.PlaceSearch({ // 构造地点查询类
-          pageSize: 5,
-          pageIndex: 1,
+        let placeSearch = new AMap.PlaceSearch({ // 构造地点查询类
+          // pageSize: 5,
+          // pageIndex: 1,
           city: '010', // 城市
-          map: map,
-          panel: 'panel'
+          map: map
+          // panel: 'panel'
         })
         // 关键字查询
-        placeSearch.search(_this.searchKey)
-        console.log(placeSearch)
+        placeSearch.search(_this.searchKey, (status, result) => {
+          console.log(result)
+          if (result.info === 'OK') {
+            let data = result.poiList.pois[0].location
+            _this.center = [data.lng, data.lat]
+            marker.setPosition(_this.center)
+            map.panTo(_this.center)
+            _this.getNowAddress()
+            console.log(data)
+            console.log(result)
+          } else {
+            _this.nowAddress = '未搜索到数据'
+          }
+        })
       })
+    },
+    // 显示信息窗体
+    openInfo (address) {
+      // let info = []
+      // info.push('地址')
+      // info.push(address)
+      let infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)})
+      infoWindow.setContent(address)
+      infoWindow.open(map, this.center)
     }
   }
 }
