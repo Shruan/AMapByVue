@@ -7,6 +7,10 @@
       </div>
       <div class="">
         {{nowAddress}}
+        <ul>
+          <h2 v-if="searchResult.length">搜索结果</h2>
+          <li v-for="item in searchResult">{{item.address}}</li>
+        </ul>
       </div>
       <div id="panel"></div>
     </div>
@@ -21,13 +25,15 @@
 import AMap from 'AMap'
 let map = {}
 let marker = {}
+let placeSearch = {}
 export default {
   name: 'AMap',
   data () {
     return {
       center: [118.180987, 24.486432],
       nowAddress: '',
-      searchKey: ''
+      searchKey: '',
+      searchResult: []
     }
   },
   mounted () {
@@ -72,6 +78,21 @@ export default {
         // map.setFitView()
         _this.getNowAddress()
       })
+      placeSearch = new AMap.PlaceSearch({ // 构造地点查询类
+        // pageSize: 5,
+        // pageIndex: 1,
+        city: '010', // 城市
+        map: map
+        // panel: 'panel'
+      })
+      // 监听点击搜索结果标签事件
+      AMap.event.addListener(placeSearch, 'markerClick', (e) => {
+        console.log(e)
+        this.center = [e.data.location.lng, e.data.location.lat]
+        marker.setPosition(this.center)
+        map.panTo(this.center)
+        _this.getNowAddress()
+      })
       // 输入提示
     },
     // 获取中心点的详细地址
@@ -102,18 +123,12 @@ export default {
       let _this = this
       this.searchKey = this.$refs.tipinput.value
       AMap.service(['AMap.PlaceSearch'], function () {
-        let placeSearch = new AMap.PlaceSearch({ // 构造地点查询类
-          // pageSize: 5,
-          // pageIndex: 1,
-          city: '010', // 城市
-          map: map
-          // panel: 'panel'
-        })
         // 关键字查询
         placeSearch.search(_this.searchKey, (status, result) => {
           console.log(result)
           if (result.info === 'OK') {
             let data = result.poiList.pois[0].location
+            _this.searchResult = result.poiList.pois
             _this.center = [data.lng, data.lat]
             marker.setPosition(_this.center)
             map.panTo(_this.center)
@@ -123,6 +138,7 @@ export default {
           } else {
             _this.nowAddress = '未搜索到数据'
           }
+          console.log(placeSearch)
         })
       })
     },
