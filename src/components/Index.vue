@@ -7,9 +7,10 @@
       </div>
       <div class="">
         {{nowAddress}}
-        <ul>
+        <ul style="height: 500px;
+        overflow-x: hidden;">
           <h2 v-if="searchResult.length">搜索结果</h2>
-          <li v-for="item in searchResult">{{item.address}}</li>
+          <li v-for="item in searchResult"  @click="clickAddress(item)" class="addressList">{{item.address}}</li>
         </ul>
       </div>
       <div id="panel"></div>
@@ -26,6 +27,7 @@ import AMap from 'AMap'
 let map = {}
 let marker = {}
 let placeSearch = {}
+let geocoder = {}
 export default {
   name: 'AMap',
   data () {
@@ -55,19 +57,32 @@ export default {
         zoom: 13
       })
       let _this = this
-      AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.PlaceSearch', 'AMap.Marker', 'AMap.Geocoder', 'AMap.InfoWindow('], () => {
+      AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.PlaceSearch', 'AMap.Marker', 'AMap.Geocoder', 'AMap.InfoWindow'], () => {
         map.addControl(new AMap.ToolBar())
         map.addControl(new AMap.Scale())
       })
       let tipinput = new AMap.Autocomplete({
         input: 'tipinput'
       })
-      console.log('tipinput')
+      // console.log('tipinput')
       console.log(tipinput)
       marker = new AMap.Marker({
         icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
         position: this.center
         // title: provinces[i].name
+      })
+      AMap.service('AMap.Geocoder', () => {
+        // 实例化Geocoder
+        geocoder = new AMap.Geocoder({
+          city: '010' // 城市，默认：“全国”
+        })
+      })
+      placeSearch = new AMap.PlaceSearch({ // 构造地点查询类
+        // pageSize: 5,
+        // pageIndex: 1,
+        city: '010' // 城市
+        // map: map
+        // panel: 'panel'
       })
       marker.setMap(map)
       map.on('click', (e) => {
@@ -82,13 +97,6 @@ export default {
       AMap.event.addListener(marker, 'click', () => {
         _this.getNowAddress()
       })
-      placeSearch = new AMap.PlaceSearch({ // 构造地点查询类
-        // pageSize: 5,
-        // pageIndex: 1,
-        city: '010', // 城市
-        map: map
-        // panel: 'panel'
-      })
       // 监听点击搜索结果标签事件
       AMap.event.addListener(placeSearch, 'markerClick', (e) => {
         console.log(e)
@@ -99,15 +107,16 @@ export default {
       })
       // 输入提示
     },
+    // 根据地址获取地理编码
+    getNowCode (address) {
+      geocoder.getLocation('address', function (status, result) {
+        if (status === 'complete' && result.info === 'OK') {
+          console.log(result)
+        }
+      })
+    },
     // 获取中心点的详细地址
     getNowAddress () {
-      let geocoder = {}
-      AMap.service('AMap.Geocoder', () => {
-        // 实例化Geocoder
-        geocoder = new AMap.Geocoder({
-          city: '010' // 城市，默认：“全国”
-        })
-      })
       // 地理编码返回详细地址
       geocoder.getAddress(this.center, (status, result) => {
         if (status === 'complete' && result.info === 'OK') {
@@ -157,6 +166,14 @@ export default {
       let infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)})
       infoWindow.setContent(address)
       infoWindow.open(map, this.center)
+    },
+    clickAddress (index) {
+      console.log(index)
+      this.center = [index.location.lng, index.location.lat]
+      console.log(this.center)
+      marker.setPosition(this.center)
+      map.panTo(this.center)
+      this.getNowAddress()
     }
   }
 }
@@ -174,10 +191,14 @@ export default {
   .AMap {
     display: flex;
   }
+  .addressList {
+    min-height: 50px;
+  }
   #panel {
     background-color: white;
     max-height: 90%;
     overflow-y: auto;
     width: 280px;
-}
+ }
+
 </style>
