@@ -1,16 +1,18 @@
 <template>
   <div class="AMap">
     <div class="AMap-left">
-      <div class="">
+      <div>
         <input id="tipinput" ref="tipinput" v-model="searchKey" :value="searchKey"/>
         <button type="button" name="button" @click="seachAddress">搜索</button>
       </div>
-      <div class="">
+      <div style="margin-top:10px;height:50px;">
         {{nowAddress}}
-        <ul style="height: 500px;
-        overflow-x: hidden;">
+      </div>
+      <div>
+        <ul style="height: 300px;
+        overflow-x: hidden;margin-top:50px">
           <h2 v-if="searchResult.length">搜索结果</h2>
-          <li v-for="item in searchResult"  @click="clickAddress(item)" class="addressList">{{item.address}}</li>
+          <li v-for="item in searchResult"  @click="clickAddress(item)" class="addressList">{{item.name}}</li>
         </ul>
       </div>
       <div id="panel"></div>
@@ -190,6 +192,8 @@ export default {
   }
   .AMap {
     display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .addressList {
     min-height: 50px;
