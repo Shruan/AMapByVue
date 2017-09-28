@@ -55,7 +55,7 @@ export default {
         zoom: 13
       })
       let _this = this
-      AMap.plugin(['AMap.ToolBar', 'AMap.Scale'], () => {
+      AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.PlaceSearch', 'AMap.Marker', 'AMap.Geocoder', 'AMap.InfoWindow('], () => {
         map.addControl(new AMap.ToolBar())
         map.addControl(new AMap.Scale())
       })
@@ -76,6 +76,10 @@ export default {
         marker.setPosition(this.center)
         map.panTo(this.center)
         // map.setFitView()
+        _this.getNowAddress()
+      })
+      // 点击marker事件
+      AMap.event.addListener(marker, 'click', () => {
         _this.getNowAddress()
       })
       placeSearch = new AMap.PlaceSearch({ // 构造地点查询类
@@ -122,6 +126,10 @@ export default {
     seachAddress () {
       let _this = this
       this.searchKey = this.$refs.tipinput.value
+      if (_this.searchKey === '') {
+        _this.searchResult = ''
+        return false
+      }
       AMap.service(['AMap.PlaceSearch'], function () {
         // 关键字查询
         placeSearch.search(_this.searchKey, (status, result) => {
@@ -138,7 +146,6 @@ export default {
           } else {
             _this.nowAddress = '未搜索到数据'
           }
-          console.log(placeSearch)
         })
       })
     },
