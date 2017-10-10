@@ -1,4 +1,4 @@
-# amapbyvue
+# AMapByVue
 
 > A Map Use By Vue
 
