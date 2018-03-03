@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/pages/Index'
 import HomePage from '@/pages/Home/HomePage'
+import InfoWindow from '@/pages/Home/InfoWindow'
 import NoUIAmap from '@/components/Index'
 
 Vue.use(Router)
@@ -17,6 +18,11 @@ const router = new Router({
           path: '/homePage',
           name: 'HomePage',
           component: HomePage
+        },
+        {
+          path: '/infoWindow',
+          name: 'InfoWindow',
+          component: InfoWindow
         },
         {
           path: '/no_UI_Amap',

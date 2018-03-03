@@ -20,7 +20,7 @@
           </template>
           <MenuItem name="/homePage">首页</MenuItem>
           <MenuItem name="/no_UI_Amap">无UI高德地图</MenuItem>
-          <MenuItem name="1-3">举报管理</MenuItem>
+          <MenuItem name="/infoWindow">地图信息窗体</MenuItem>
       </Submenu>
       <Submenu name="2">
           <template slot="title">
