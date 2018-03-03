@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-cloak>
     <!-- <img src="./assets/logo.png"> -->
     <router-view></router-view>
   </div>
@@ -21,5 +21,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+[v-cloak]{
+  display: 'none';
 }
 </style>
