@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/Index'
+import Index from '@/pages/Index'
+import HomePage from '@/pages/Home/HomePage'
+import NoUIAmap from '@/components/Index'
 
 Vue.use(Router)
 
@@ -9,7 +11,19 @@ const router = new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index
+      component: Index,
+      children: [
+        {
+          path: '/homePage',
+          name: 'HomePage',
+          component: HomePage
+        },
+        {
+          path: '/no_UI_Amap',
+          name: 'No_UI_Amap',
+          component: NoUIAmap
+        }
+      ]
     }
   ]
 })

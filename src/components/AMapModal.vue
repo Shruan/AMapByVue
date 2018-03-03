@@ -291,26 +291,25 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
   .search-result {
     width: 300px;
     height: 400px;;
     font-size: 14px;
     color: #80848F;
-
-    ul {
-      overflow-x: hidden;
-      height: 400px;
-      box-sizing: border-box;
-
-      li {
-        padding: 10px;
-        line-height: 30px;
-        border-bottom: 1px solid #ededed;
-        cursor: pointer;
-      }
-    }
   }
+  .search-result ul {
+    overflow-x: hidden;
+    height: 400px;
+    box-sizing: border-box;
+  }
+  .search-result ul li {
+    padding: 10px;
+    line-height: 30px;
+    border-bottom: 1px solid #ededed;
+    cursor: pointer;
+  }
+
   .Amap-search {
     height: 120px;
     display: flex;
@@ -319,33 +318,39 @@ export default {
     align-items: center;
     border-bottom: 1px solid #ededed;
   }
+
   .mymap {
     width: 620px;
     height: 450px;
   }
+
   .AMap-left {
     align-self: stretch;
   }
+
   .AMap {
     height: 450px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   .addressList {
     min-height: 80px;
-
-    .name {
-      font-size: 14px;
-    }
-
-    .address {
-      font-size: 12px;
-    }
   }
+
+  .addressList .name {
+    font-size: 14px;
+  }
+
+  .addressList  .address {
+    font-size: 12px;
+  }
+
   .address-active {
     color: #3ccba6;
   }
+
   .panel {
     background-color: white;
     max-height: 90%;
