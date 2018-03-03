@@ -4,7 +4,7 @@ import Index from '@/components/Index'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -13,3 +13,19 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(to)
+  next()
+})
+
+router.afterEach((to, from) => {
+  // 关闭加载进度条
+  // if (to.matched[to.matched.length - 1].name === 'Error') {
+  //   iView.LoadingBar.error()
+  // } else {
+  //   iView.LoadingBar.finish()
+  // }
+})
+
+export default router
