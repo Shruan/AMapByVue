@@ -26,12 +26,16 @@ let marker = {}
 
 export default {
   props: {
-    isShowMapModal: {
+    isShow: {
       type: Boolean,
       required: true
     },
     centerPositon: {
       type: Array
+    },
+    data: {
+      type: Object,
+      required: true
     }
   },
   components: {
@@ -51,9 +55,13 @@ export default {
     }
   },
   watch: {
-    isShowMapModal (val) {
+    isShow (val) {
       this.isShowModal = val
       if (val) {
+        this.routerLink = ''
+        clearInterval(this.startInterval)
+        this.orderList = this.data.data
+        this.orderCount = this.data.count
         if (!this.centerPositon) {
           this.getCenterPosition()
         } else {
@@ -72,8 +80,11 @@ export default {
     },
     'routerLink': {
       handler (val, oldValue) {
-        if (val && val !== oldValue) {
-          this.$router.push({name: 'AssignOrderDetail', params: { orderId: val }})
+        if (this.isShowModal && val && val !== oldValue) {
+          this.$emit('on-ok', val)
+          this.isShowModal = false
+          this.routerLink = window.routerLink = ''
+          // this.$router.push({name: 'AssignOrderDetail', params: { orderId: val }})
           clearInterval(this.startInterval)
         }
       },
@@ -127,7 +138,6 @@ export default {
     // 显示信息窗体
     openInfo (val, vMarker) {
       if (this.startInterval) clearInterval(this.startInterval)
-
       let infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)})
       let title = val.title
       let content = []
@@ -194,52 +204,37 @@ export default {
     }
   },
   created () {
-    this.isShowModal = this.isShowMapModal
+    this.isShowModal = this.isShow
     this.routerLink = window.routerLink = ''
-    this.$http.all([
-      this.$http.get('/order/unDeliverOrderList', {
-        params: {
-          pageIndex: 0,
-          pageSize: 100
-        }
-      }),
-      this.$http.get('/order/unDeliverOrderListCount')
-    ]).then(this.$http.spread((res1, res2) => {
-      this.orderList = res1.data
-      this.orderCount = res2.data
-      this.loadmap()   // 加载地图和相关组件
-    }))
   },
   mounted () {
   }
 }
 </script>
 
-<style lang="less">
+<style scoped>
 
   .AMap {
     position: relative;
     height: 522px;
-
-    .mymap {
-      width: 100%;
-      height: 522px;
-    }
-
-    .amapTips {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 12px;
-      background-color: #fff;
-      height: 35px;
-      text-align: left;
-      padding-left: 10px;
-      padding-right: 10px;
-      border-radius: 3px;
-      border: 1px solid #ccc;
-      line-height: 30px;
-      z-index: 999;
-    }
+  }
+  .mymap {
+    width: 100%;
+    height: 522px;
+  }
+  .amapTips {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    background-color: #fff;
+    height: 35px;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    line-height: 30px;
+    z-index: 999;
   }
 </style>
