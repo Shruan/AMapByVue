@@ -26,4 +26,16 @@ export default {
 [v-cloak]{
   display: 'none';
 }
+
+/* 旋转动画 */
+.loading-load-c {
+  animation:myfirst 1s linear infinite;
+}
+
+@keyframes myfirst
+{
+  from { transform: rotate(0deg);}
+  50%  { transform: rotate(180deg);}
+  to   { transform: rotate(360deg);}
+}
 </style>
