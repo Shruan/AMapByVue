@@ -2,7 +2,7 @@
   <div class="AMap">
     <div class="AMap-left">
       <div>
-        <input id="tipinput" ref="tipinput" v-model="searchKey" :value="searchKey"/>
+        <input id="tipinput" ref="tipinput" v-model="searchKey" />
         <button type="button" name="button" @click="seachAddress">搜索</button>
       </div>
       <div style="margin-top:10px;height:50px;">
