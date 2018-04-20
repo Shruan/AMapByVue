@@ -92,7 +92,9 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+
+    new webpack.BannerPlugin("'author': 'Shruan <qiushiyuan1994@qq.com>\n 'Github': 'https://github.com/Shruan'")
   ]
 })
 
