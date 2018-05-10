@@ -69,7 +69,7 @@ export default {
       // console.log('tipinput')
       console.log(tipinput)
       marker = new AMap.Marker({
-        icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
         position: this.center
         // title: provinces[i].name
       })
