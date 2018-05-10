@@ -131,7 +131,7 @@ export default {
   },
   methods: {
     getCenterPosition () {
-      let url = 'http://restapi.amap.com/v3/ip?ip=&output=xml&key=43202ac9c4bbbe5ef5d65478de3617be'
+      let url = 'https://restapi.amap.com/v3/ip?ip=&output=xml&key=43202ac9c4bbbe5ef5d65478de3617be'
       this.$http.post(url).then(res => {
         let rectangle = res.rectangle.split(';')
         let position1 = rectangle[0].split(',')
@@ -172,7 +172,7 @@ export default {
       //   input: 'tipinput'
       // })
       marker = new AMap.Marker({
-        icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
         position: this.center
         // title: provinces[i].name
       })
