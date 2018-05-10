@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     getCenterPosition () {
-      let url = 'http://restapi.amap.com/v3/ip?ip=&output=xml&key=43202ac9c4bbbe5ef5d65478de3617be'
+      let url = 'https://restapi.amap.com/v3/ip?ip=&output=xml&key=43202ac9c4bbbe5ef5d65478de3617be'
       this.$http.post(url).then(res => {
         let rectangle = res.rectangle.split(';')
         let position1 = rectangle[0].split(',')
@@ -124,7 +124,7 @@ export default {
         if (val.longitude && val.latitude) {
           marker = new AMap.Marker({
             map: map,
-            icon: `http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png`,
+            icon: `https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png`,
             position: [val.longitude, val.latitude],
             offset: new AMap.Pixel(-12, -36)
           })
