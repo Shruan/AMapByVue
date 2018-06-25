@@ -4,14 +4,14 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import iView from 'iview'
-import axios from 'axios'
+import http from './utils/request'
 import 'iview/dist/styles/iview.css'
 
 Vue.use(iView)
 
 Vue.config.productionTip = false
 
-Vue.prototype.$http = axios
+Vue.prototype.$http = http
 Vue.prototype.$qs = require('querystring').stringify
 Vue.prototype.$header = {
   'Content-Type': 'application/json;charset=utf-8'
