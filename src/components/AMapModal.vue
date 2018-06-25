@@ -4,7 +4,7 @@
       transfer
       scrollable
       title="选择地址"
-      v-model="isShowModal"
+      v-model="isShow"
       :width="920"
       :loading="madalLoading"
       @on-ok="saveAddress">
@@ -70,7 +70,7 @@ export default {
       type: String,
       required: true
     },
-    isShowMapModal: {
+    value: {
       type: Boolean,
       required: true
     },
@@ -83,12 +83,10 @@ export default {
       required: true
     }
   },
-  components: {
-  },
   data () {
     return {
       nowClickIndex: 0,
-      isShowModal: false,
+      isShow: false,
       madalLoading: true,
       center: [118.180987, 24.486432],
       nowAddress: '',
@@ -112,8 +110,11 @@ export default {
         }
       }
     },
-    isShowMapModal (val) {
+    value (val) {
       if (val) {
+        this.$http.get('/area/list?pid=1').then(res => {
+          this.cityList = res.data
+        })
         if (!this.centerPositon) {
           this.getCenterPosition()
         } else {
@@ -123,10 +124,10 @@ export default {
         }
         this.loadmap()   // 加载地图和相关组件
       }
-      this.isShowModal = val
+      this.isShow = val
     },
-    isShowModal (val) {
-      this.$emit('is-show-on-change', val)
+    isShow (val) {
+      this.$emit('input', val)
     }
   },
   methods: {
@@ -153,7 +154,7 @@ export default {
       data.position = this.center
       if (data.address && data.position.length === 2) {
         this.$emit('select-address', data)
-        this.isShowModal = false
+        this.isShow = false
       } else {
         this.$Message.warning('请选择地址后再试')
       }
@@ -279,14 +280,6 @@ export default {
       }
       placeSearch.setCity(this.selectCity)
     }
-  },
-  created () {
-    this.isShowModal = this.isShowMapModal
-    this.$http.get('/area/list?pid=1').then(res => {
-      this.cityList = res.data
-    })
-  },
-  mounted () {
   }
 }
 </script>

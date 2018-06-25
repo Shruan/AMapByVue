@@ -18,8 +18,7 @@
       :panelId="'createOrderPanel'"
       :containerId="'createOrderContainer'"
       :centerPositon="[]"
-      :isShowMapModal="isShowMapModal"
-      @is-show-on-change="isShowMapModal = $event"
+      v-model="isShowMapModal"
       @select-address="getMessage = $event"
     />
   </div>
