@@ -5,7 +5,7 @@
       transfer
       scrollable
       title="选择地址"
-      v-model="isShowModal"
+      v-model="isShow"
       :width="960"
       :styles="{width: '80%', height:' 80%'}"
       :loading="madalLoading"
@@ -26,7 +26,7 @@ let marker = {}
 
 export default {
   props: {
-    isShow: {
+    value: {
       type: Boolean,
       required: true
     },
@@ -43,7 +43,7 @@ export default {
   data () {
     return {
       orderList: [],
-      isShowModal: false,
+      isShow: this.value,
       madalLoading: true,
       center: [118.180987, 24.486432],
       cityList: [],
@@ -55,8 +55,8 @@ export default {
     }
   },
   watch: {
-    isShow (val) {
-      this.isShowModal = val
+    value (val) {
+      this.isShow = val
       if (val) {
         this.routerLink = ''
         clearInterval(this.startInterval)
@@ -72,17 +72,17 @@ export default {
         this.loadmap()   // 加载地图和相关组件
       }
     },
-    isShowModal (val) {
-      this.$emit('is-show-on-change', val)
+    isShow (val) {
+      this.$emit('input', val)
       if (!val) {
         if (this.startInterval) clearInterval(this.startInterval)
       }
     },
     'routerLink': {
       handler (val, oldValue) {
-        if (this.isShowModal && val && val !== oldValue) {
+        if (this.isShow && val && val !== oldValue) {
           this.$emit('on-ok', val)
-          this.isShowModal = false
+          this.isShow = false
           this.routerLink = window.routerLink = ''
           // this.$router.push({name: 'AssignOrderDetail', params: { orderId: val }})
           clearInterval(this.startInterval)
@@ -107,7 +107,7 @@ export default {
       })
     },
     saveAddress () {
-      this.isShowModal = false
+      this.isShow = false
     },
     loadmap () {
       map = new AMap.Map('assignContainer', {
@@ -204,7 +204,6 @@ export default {
     }
   },
   created () {
-    this.isShowModal = this.isShow
     this.routerLink = window.routerLink = ''
   },
   mounted () {

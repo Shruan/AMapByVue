@@ -16,8 +16,7 @@
     <!-- 信息窗体弹出框 -->
     <AMapInfoWindowModal
       :data="infoWindowData"
-      :isShow="isShowMapModal"
-      @is-show-on-change="isShowMapModal = $event"
+      v-model="isShowMapModal"
       @on-ok="getMessage = $event"
     />
   </div>
