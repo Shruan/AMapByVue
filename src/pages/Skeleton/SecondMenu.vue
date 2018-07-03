@@ -3,32 +3,25 @@
   <div
     class="smy__second-menu"
     :class="{'smy__second-menu-hide': false}"
-    :style="{'z-index': false ? '99' : ''}"
-  >
+    :style="{'z-index': false ? '99' : ''}">
     <div class="logo-text">
       Vue高德地图
     </div>
     <Menu
       ref="secondMenu"
       theme="light"
+      :open-names="['1']"
       style="width: 160px;height: 100%;overflow-x: hidden;"
       @on-select="$router.push({path: $event})">
       <Submenu name="1">
-          <template slot="title">
-              <Icon type="ios-paper"></Icon>
-              内容管理
-          </template>
-          <MenuItem name="/homePage">首页</MenuItem>
-          <MenuItem name="/no_UI_Amap">无UI高德地图</MenuItem>
-          <MenuItem name="/infoWindow">地图信息窗体</MenuItem>
-      </Submenu>
-      <Submenu name="2">
-          <template slot="title">
-              <Icon type="ios-people"></Icon>
-              用户管理
-          </template>
-          <MenuItem name="2-1">新增用户</MenuItem>
-          <MenuItem name="2-2">活跃用户</MenuItem>
+        <template slot="title">
+          <Icon type="ios-paper"></Icon>
+          地图组件
+        </template>
+        <MenuItem name="/homePage">首页</MenuItem>
+        <MenuItem name="/infoWindow">地图信息窗体</MenuItem>
+        <MenuItem name="/complexInfoWindow">复杂信息窗体应用</MenuItem>
+        <MenuItem name="/no_UI_Amap">无UI高德地图</MenuItem>
       </Submenu>
     </Menu>
     <!-- <Menu

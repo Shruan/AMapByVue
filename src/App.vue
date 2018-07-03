@@ -32,7 +32,9 @@ html,body,#app{
   padding: 0;
   border: 0px;
 }
-
+.smy__card-full {
+  min-height: 100%;
+}
 [v-cloak]{
   display: 'none';
 }
