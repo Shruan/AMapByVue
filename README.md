@@ -30,10 +30,12 @@ npm run build --report
 ![数据回调](./static/image/ditu3.jpg)
 
 ### 实例2 地图信息窗体
-![地图弹窗](./static/image/xxct1.jpg)
+![地图信息窗体](./static/image/xxct1.jpg)
 
-![数据回调](./static/image/xxct2.jpg)
+![地图信息窗体](./static/image/xxct2.jpg)
 
+### 实例2 复杂地图信息窗体
+![复杂地图信息窗体](./static/image/fzdt1.jpg)
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 [QSY项目链接](https://github.com/Shruan/AMapByVue)
